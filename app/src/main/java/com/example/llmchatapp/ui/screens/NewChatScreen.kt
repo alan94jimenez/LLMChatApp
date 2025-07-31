@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.llmchatapp.data.LlmProvider
+import com.example.llmchatapp.navigation.Screen
 import com.example.llmchatapp.ui.viewmodels.NewChatViewModel
 import com.example.llmchatapp.ui.viewmodels.NewChatViewModelFactory
 
@@ -74,7 +75,9 @@ fun NewChatScreen(
             // --- Step 2: Show User-Saved Model List ---
             if (savedModels.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize().padding(paddingValues),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("No models saved for ${selectedProvider.name}. Add them in Settings.")
@@ -85,9 +88,13 @@ fun NewChatScreen(
                         ListItem(
                             headlineContent = { Text(modelId) },
                             modifier = Modifier.clickable {
-                                val newConversation = viewModel.createNewConversation(selectedProvider.name, modelId)
-                                navController.navigate("chat_screen/${newConversation.id}") {
-                                    popUpTo("chat_history_screen")
+                                val newConversation = viewModel.createNewConversation(
+                                    selectedProvider.name,
+                                    modelId
+                                )
+                                val route = Screen.ChatDetail.createRoute(newConversation.id)
+                                navController.navigate(route) {
+                                    popUpTo(Screen.ChatHistory.route)
                                 }
                             }
                         )

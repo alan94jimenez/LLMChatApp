@@ -61,7 +61,7 @@ fun ChatHistoryScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("new_chat_screen") }) {
+            FloatingActionButton(onClick = { navController.navigate(Screen.ChatDetail.createRoute("new_chat_screen") }) {
                 Icon(Icons.Default.Add, contentDescription = "New Chat")
             }
         }
@@ -90,7 +90,7 @@ fun ChatHistoryScreen(
                                 if (uiState.isMultiSelectMode) {
                                     viewModel.toggleConversationSelection(conversation.id)
                                 } else {
-                                    navController.navigate("chat_screen/${conversation.id}")
+                                    navController.navigate(Screen.ChatDetail.createRoute("chat_screen/${conversation.id}")
                                 }
                             },
                             onLongClick = {
@@ -133,7 +133,7 @@ fun DefaultTopAppBar(navController: NavController, onDeleteAll: () -> Unit) {
                     DropdownMenuItem(
                         text = { Text("Settings") },
                         onClick = {
-                            navController.navigate("api_key_screen")
+                            navController.navigate(Screen.ChatDetail.createRoute("api_key_screen")
                             menuExpanded = false
                         }
                     )
