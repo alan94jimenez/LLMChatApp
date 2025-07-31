@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.llmchatapp.navigation.Screen
 import com.example.llmchatapp.ui.screens.ApiKeyScreen
 import com.example.llmchatapp.ui.screens.ChatHistoryScreen
 import com.example.llmchatapp.ui.screens.ChatScreen
@@ -36,19 +37,30 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "chat_history_screen") {
-        composable("chat_history_screen") {
-            ChatHistoryScreen(navController = navController)
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.ChatHistory.route
+    ) {
+        composable(Screen.ChatHistory.route) {
+            ChatHistoryScreen(navController)
         }
-        composable("api_key_screen") {
-            ApiKeyScreen(navController = navController)
+        composable(Screen.ApiKey.route) {
+            ApiKeyScreen(navController)
         }
-        composable("new_chat_screen") {
-            NewChatScreen(navController = navController)
+        composable(Screen.NewChat.route) {
+            NewChatScreen(navController)
         }
-        composable("chat_screen/{conversationId}") { backStackEntry ->
-            val conversationId = backStackEntry.arguments?.getString("conversationId")
-            ChatScreen(navController = navController, conversationId = conversationId ?: "")
+        composable(Screen.ChatDetail.route) { backStackEntry ->
+            val conversationId = backStackEntry
+                .arguments
+                ?.getString(Screen.ChatDetail.getArgKey())
+                .orEmpty()
+
+            ChatScreen(
+                navController = navController,
+                conversationId = conversationId
+            )
         }
     }
 }
